@@ -32,6 +32,6 @@ class User extends Authenticatable
 
     public function hasPermission($permission)
     {
-        dd($this->roles()->withPivot());
+        dd($this->roles()->withPivot('id')->permissions());
     }
 }
