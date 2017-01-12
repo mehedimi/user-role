@@ -29,9 +29,26 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Role::class);
     }
+    public function role()
+    {
+        return $this->roles()->first();
+    }
 
     public function hasPermission($permission)
     {
-        dd($this->roles()->withPivot('id')->permissions());
+        if(in_array($permission, $this->roleAllPermissions())){
+            return true;
+        }
+        return false;
     }
+    public function roleAllPermissions()
+    {
+        return Role::find($this->roleName()->id)->permissions()->pluck('name')->toArray();
+    }
+
+    public function roleName()
+    {
+        return $this->roles()->first();
+    }
+
 }

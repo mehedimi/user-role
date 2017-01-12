@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 use App\Http\Requests;
+use App\Permission;
+use App\Role;
+use App\User;
+use Illuminate\Http\Request;
 
 class PermissionController extends Controller
 {
@@ -13,9 +15,11 @@ class PermissionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Role $role)
     {
-        
+        $permissions = Permission::all();
+        $rolePermissions = $role->permissions()->pluck('name')->toArray();
+       return view('permission.show', compact('role', 'permissions', 'rolePermissions'));
     }
 
     /**

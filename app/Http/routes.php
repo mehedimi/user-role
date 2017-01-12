@@ -11,15 +11,28 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
 
 Route::auth();
 
-Route::get('/users', [
-	'middleware' => 'permission:user.show',
+Route::get('/', [
+	'middleware' => ['auth', 'permission:user.show'],
 	'uses' => 'UserController@index'
 ]);
 
+Route::get('/user/{user}/edit', [
+	'middleware' => ['auth', 'permission:user.edit'],
+	'uses' => 'UserController@edit'
+]);
+
+Route::get('/user/{user}/role', [
+	'uses' => 'RoleController@index',
+	'as' => 'role.index'
+]);
+Route::get('user/roles', [
+	'uses' => 'RoleController@getRoles',
+	'as' => 'roles.index'
+]);
+
 Route::get('/home', 'HomeController@index');
+Route::get('/role/{role}/permissions', 'PermissionController@index')->name('role.permissions');
